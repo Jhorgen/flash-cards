@@ -5,21 +5,38 @@
 </head>
 <body>
 
-  <div class="container">
-<h1>title</h1>
+  <div class="jumbotron">
     <form class="formOne">
+      <h1 id="question">Question</h1>
+      <br>
+      <div class="choices">
+        <div class="radio">
+          <label><table><tr>
+            <td><input type="radio" name="question" value="0"></td>
+            <td id="choice0" class=choice>Choice 1</td>
+          </tr></table></label>
+        </div>
+        <div class="radio">
+          <label><table><tr>
+            <td><input type="radio" name="question" value="1"></td>
+            <td id="choice1" class=choice>Choice 2</td>
+          </tr></table></label>
+        </div>
+        <div class="radio">
+          <label><table><tr>
+            <td><input type="radio" name="question" value="2"></td>
+            <td id="choice2" class=choice>Choice 3</td>
+          </tr></table></label>
+        </div>
 
-
-
-
-
-
-
-
-
-
-      <button id='submitButton' type="submit" name="button">Submit</button>
+      </div>
+      <br>
+      <button id='submitButton' type="submit" name="button" class="form-control">Submit</button>
+      <button id='nextButton' type="button" name="button"class="form-control">Next card</button>
     </form>
+    <div>
+      <p id="timer"></p>
+    </div>
   </div>
 
 

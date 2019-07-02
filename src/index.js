@@ -12,54 +12,97 @@ let choices = [
   "interpreted",
   "compiled",
   "deprecated"
-]
+];
 let correctChoiceIndex = 0;
 flashCards.push(new FlashCard(question, choices, correctChoiceIndex));
 
 // Question 2
-question = "";
+question = "How many scripts can you have in a document?";
 choices = [
-  "",
-  "",
-  ""
-]
-let correctChoiceIndex = 0;
+
+  "An unlimited number",
+  "7",
+  "565"
+];
+
 flashCards.push(new FlashCard(question, choices, correctChoiceIndex));
 
 // Question 3
-question = "";
+question = "What is a javascript block?";
 choices = [
-  "",
-  "",
-  ""
-]
-let correctChoiceIndex = 0;
+  "A group of statements grouped by curly brackets",
+  "A group of loops grouped by parentheses",
+  "A term used to describe a computer that runs javascript"
+];
+
 flashCards.push(new FlashCard(question, choices, correctChoiceIndex));
 
+let points = 0;
+let flashCard = null;
+let timeoutID = 0;
+let intervalID = 0;
+let timeoutSeconds = 10;
+let seconds = timeoutSeconds;
+let cardIndex = 0;
+
 $(document).ready(function() {
-  // load a flahcard into html
-  // Set interval for repeat
-    // If time runs out
-      // display correct choice and subtract a point
-      // remove flashcard from array?
-      // reload new flashCard
+  displayCard(cardIndex);
 
   // Handle submit button
   $('.formOne').submit(event => {
     event.preventDefault();
+
     // Check if selected choice is correct
+    let inputValue = parseInt($("input[name='question']:checked").val());
+    if (flashCard.choices[inputValue] == flashCard.correctChoice) {
+      // Right answer
+      points = points + 1;
+      const i = flashCard.choices.indexOf(flashCard.correctChoice);
+      $('#choice' + i).addClass('highlight');
+      $('#submitButton').hide();
+      $("#nextButton").show();
+    } else {
+      // Wrong answer
+      $('#choice' + inputValue).addClass('highlightRed');
+    }
+  });
 
-    // Adjust points
-
-    // Remove flashcard from array
-
-    // If array is empty, show winning message
-
-    // Else reload with new flashcard
-
+  $("#nextButton").click(function(){
+    $('input[name="question"]').prop("checked", false);
+    $('.choice').removeClass('highlight');
+    $('.choice').removeClass('highlightRed');
+    cardIndex = (cardIndex + 1) % flashCards.length;
+    displayCard(cardIndex);
+    $("#nextButton").hide();
+    $('#submitButton').show();
   });
 });
 
-displayCard(flashCard) {
-
+function displayCard(cardIndex) {
+  // add flashcard data to html
+  flashCard = flashCards[cardIndex];
+  flashCard.scrambleChoices();
+  $('#question').text(flashCard.question);
+  flashCard.choices.forEach( (choice, index) => {
+    $('#choice'+index).text(choice);
+  });
+  // reset timeout
+  clearTimeout(timeoutID);
+  timeoutID = setTimeout(function(){
+    // Highligh correct choice
+    const i = flashCard.choices.indexOf(flashCard.correctChoice);
+    $(`input[value="${i}"]`).prop("checked", true);
+    $('#choice' + i).addClass('highlight');
+    clearInterval(intervalID);
+    $('#timer').text(0);
+    $('#submitButton').hide();
+    $('#nextButton').show();
+  }, timeoutSeconds * 1000);
+  // reset countdown timer
+  clearInterval(intervalID);
+  seconds = timeoutSeconds;
+  $('#timer').text(timeoutSeconds);
+  intervalID = setInterval(function(){
+    $('#timer').text(--seconds);
+  }, 1000);
 }

@@ -7,8 +7,10 @@ export class FlashCard {
 
   scrambleChoices() {
     for (let i = this.choices.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-      [array[i], array[j]] = [array[j], array[i]]; // swap elements
+      const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+      const temp = this.choices[i];
+      this.choices[i] = this.choices[j];
+      this.choices[j] = temp;
     }
   }
 
@@ -17,5 +19,3 @@ export class FlashCard {
   }
 
 }
-
-export class
